@@ -2,35 +2,38 @@ import re
 
 class TokenOptimizer:
     """
-    Utility to optimize token usage in AI agent prompts.
-    Includes logic for message condensation and redundant data removal.
+    Module to reduce token usage by stripping redundant information
+    and compressing context before sending to LLM.
     """
-    
-    @staticmethod
-    def condense_messages(messages, max_history=10):
-        """
-        Retains the system message, the last N messages, and summarizes the rest.
-        (Placeholder logic for now).
-        """
-        if len(messages) <= max_history:
-            return messages
-        
-        system_msg = [m for m in messages if m.get("role") == "system"]
-        recent_msgs = messages[-max_history:]
-        
-        # In a real scenario, we would use a low-cost model to summarize intermediate messages.
-        return system_msg + recent_msgs
+    def __init__(self, max_history=10):
+        self.max_history = max_history
 
-    @staticmethod
-    def strip_redundant_whitespace(text):
+    def strip_redundant_whitespace(self, text):
+        return re.sub(r'\s+', ' ', text).strip()
+
+    def summarize_context(self, history):
         """
-        Removes extra whitespaces and newlines to save tokens.
+        Keep the last N turns, and summarize the earlier ones.
+        (Placeholder for summarization logic)
         """
-        return re.sub(r'\n+', '\n', text).strip()
+        if len(history) <= self.max_history:
+            return history
+        
+        # Keep the latest context intact
+        important_part = history[-self.max_history:]
+        return important_part
+
+    def optimize_payload(self, messages):
+        optimized = []
+        for msg in messages:
+            content = msg.get("content", "")
+            # Apply basic cleanup
+            clean_content = self.strip_redundant_whitespace(content)
+            optimized.append({**msg, "content": clean_content})
+        return optimized
 
 if __name__ == "__main__":
     optimizer = TokenOptimizer()
-    sample_text = "Hello    world! \n\n This is   a test.\n\n\nNew line."
-    optimized = optimizer.strip_redundant_whitespace(sample_text)
-    print(f"Original length: {len(sample_text)}, Optimized length: {len(optimized)}")
-    print(f"Result: {optimized}")
+    sample_text = "   This    is a     very    redundant    message.   "
+    print(f"Original: '{sample_text}'")
+    print(f"Optimized: '{optimizer.strip_redundant_whitespace(sample_text)}'")

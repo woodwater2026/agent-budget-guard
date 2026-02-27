@@ -9,7 +9,8 @@ Agent Budget Guard is a lightweight, proactive tool designed to prevent "Inferen
 - **Proactive Cost Estimation**: Calculate costs *before* the API call happens.
 - **Context-Aware Thresholds**: Set different limits for "routine", "experiment", and "high-roi" tasks.
 - **Multi-Model Support**: Integrated pricing for Gemini-Flash, DeepSeek-V3, and Claude-3.5-Sonnet.
-- **Dynamic Routing (Coming Soon)**: Automatically switch models to stay within budget.
+- **Dynamic Routing (Coming Soon)**: Automatically switch models (e.g., to cost-effective SLMs) to stay within budget.
+- **Context Compression**: Built-in `TokenOptimizer` to strip redundant data and summarize long histories.
 
 ## 🚀 Quick Start
 ```python

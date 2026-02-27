@@ -18,7 +18,7 @@ class GuardOrchestrator:
         
         # 2. Calculate current token counts
         input_text = " ".join([m["content"] for m in optimized_messages])
-        input_tokens = len(input_text.split()) # Rough estimation
+        input_tokens = len(input_text) // 4 # Standard 2026 rough estimation (4 chars/token)
         
         # 3. Estimate cost
         est_cost = self.guard.estimate_cost(model, input_tokens, 500) # Assuming 500 output

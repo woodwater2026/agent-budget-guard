@@ -47,6 +47,24 @@ class BudgetGuard:
         recommendations.sort(key=lambda x: x[1])
         return recommendations[0] if recommendations else (None, 0.0)
 
+    def prepare_request(self, model, messages, context="routine"):
+        """
+        Cleans messages and checks budget before confirming the request.
+        """
+        try:
+            from token_optimizer import TokenOptimizer
+            optimizer = TokenOptimizer()
+            optimized_messages = optimizer.optimize_payload(messages)
+            
+            # Simple token estimation (approximate)
+            input_tokens = sum(len(m['content']) // 4 for m in optimized_messages)
+            cost = self.estimate_cost(model, input_tokens, target_output_tokens=500) # Assumption
+            
+            ok, msg = self.check_budget(cost, context)
+            return ok, msg, optimized_messages
+        except ImportError:
+            return True, "Optimizer not found, proceeding with raw messages.", messages
+
     def check_budget(self, estimated_cost, context="routine"):
         limit = self.thresholds.get(context, self.default_threshold)
         if estimated_cost > limit:

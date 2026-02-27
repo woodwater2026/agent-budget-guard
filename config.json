@@ -1,0 +1,9 @@
+{
+    "default_threshold": 0.10,
+    "thresholds": {
+        "high_roi": 5.00,
+        "routine": 0.05,
+        "experiment": 0.50
+    },
+    "notification_email": "woodwater2026@gmail.com"
+}

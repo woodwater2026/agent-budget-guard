@@ -3,7 +3,8 @@ from cost_calculator import BudgetGuard
 
 class TestBudgetGuard(unittest.TestCase):
     def setUp(self):
-        self.guard = BudgetGuard(default_threshold=0.10)
+        # BudgetGuard now loads from config.json by default
+        self.guard = BudgetGuard()
 
     def test_cost_estimation(self):
         # Claude 3.5 Sonnet: $3.00/1M in, $15.00/1M out

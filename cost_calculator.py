@@ -42,9 +42,12 @@ class BudgetGuard:
         return True, "Budget OK."
 
     def trigger_notification(self, message):
-        # Placeholder for Email/Telegram notification logic
         print(f"[NOTIFICATION SYSTEM] Sending alert: {message}")
-        # In the future, this will use the woodwater2026@gmail.com to send emails.
+        try:
+            from notifier import send_alert_email
+            send_alert_email("⚠️ Agent Budget Alert", message)
+        except ImportError:
+            print("[ERROR] Notifier module not found.")
 
 # Quick Test
 if __name__ == "__main__":

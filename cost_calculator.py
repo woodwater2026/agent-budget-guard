@@ -27,8 +27,15 @@ class BudgetGuard:
     def check_budget(self, estimated_cost, context="routine"):
         limit = self.thresholds.get(context, self.default_threshold)
         if estimated_cost > limit:
-            return False, f"ALERT: Estimated cost ${estimated_cost:.4f} exceeds {context} limit of ${limit:.4f}."
+            alert_msg = f"ALERT: Estimated cost ${estimated_cost:.4f} exceeds {context} limit of ${limit:.4f}."
+            self.trigger_notification(alert_msg)
+            return False, alert_msg
         return True, "Budget OK."
+
+    def trigger_notification(self, message):
+        # Placeholder for Email/Telegram notification logic
+        print(f"[NOTIFICATION SYSTEM] Sending alert: {message}")
+        # In the future, this will use the woodwater2026@gmail.com to send emails.
 
 # Quick Test
 if __name__ == "__main__":

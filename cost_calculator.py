@@ -33,6 +33,20 @@ class BudgetGuard:
         cost = (input_tokens / 1_000_000 * pricing["input"]) + (output_tokens / 1_000_000 * pricing["output"])
         return cost
 
+    def recommend_model(self, input_tokens, target_output_tokens, max_budget=0.01):
+        """
+        Suggests the best model based on the provided budget.
+        """
+        recommendations = []
+        for model, pricing in self.model_pricing.items():
+            est_cost = self.estimate_cost(model, input_tokens, target_output_tokens)
+            if est_cost <= max_budget:
+                recommendations.append((model, est_cost))
+        
+        # Sort by cost (ascending)
+        recommendations.sort(key=lambda x: x[1])
+        return recommendations[0] if recommendations else (None, 0.0)
+
     def check_budget(self, estimated_cost, context="routine"):
         limit = self.thresholds.get(context, self.default_threshold)
         if estimated_cost > limit:

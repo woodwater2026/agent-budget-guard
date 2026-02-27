@@ -1,27 +1,43 @@
 import re
 
 class TokenOptimizer:
-    def __init__(self, max_context_tokens=4096):
+    """
+    Core logic for reducing token usage by optimizing prompts and context.
+    """
+    def __init__(self, max_context_tokens=4000):
         self.max_context_tokens = max_context_tokens
 
-    def prune_whitespace(self, text):
-        """Remove redundant whitespace and newlines."""
-        return re.sub(r'\n+', '\n', text).strip()
+    def clean_text(self, text):
+        """
+        Removes redundant whitespace, newlines, and common 'filler' phrases.
+        """
+        # Remove multiple spaces and newlines
+        text = re.sub(r'\s+', ' ', text).strip()
+        # Remove repetitive phrases common in AI responses (example)
+        fillers = ["I understand that", "As an AI language model", "I'm happy to help"]
+        for filler in fillers:
+            text = text.replace(filler, "")
+        return text
 
-    def summarize_history(self, history, keep_last=5):
+    def truncate_history(self, messages, limit=10):
         """
-        Logic placeholder to keep the last N messages intact 
-        and summarize older ones to save tokens.
+        Keeps only the most recent N messages to save context space.
         """
-        if len(history) <= keep_last:
-            return history
-        
-        # In a real scenario, we'd call a cheap model to summarize history[0:-keep_last]
-        print(f"[OPTIMIZER] Pruning history: Keeping last {keep_last} messages.")
-        return history[-keep_last:]
+        if len(messages) <= limit:
+            return messages
+        return messages[-limit:]
+
+    def estimate_token_savings(self, original_text, optimized_text):
+        """
+        Rough estimation of characters saved (approx 4 chars per token).
+        """
+        savings = len(original_text) - len(optimized_text)
+        return max(0, savings // 4)
 
 if __name__ == "__main__":
     optimizer = TokenOptimizer()
-    sample_text = "Hello    world. \n\n\n This is   a test."
-    print(f"Original: {repr(sample_text)}")
-    print(f"Optimized: {repr(optimizer.prune_whitespace(sample_text))}")
+    sample = "   Hello!    I understand that you want to save   tokens. I'm happy to help.   "
+    clean = optimizer.clean_text(sample)
+    print(f"Original: '{sample}'")
+    print(f"Cleaned: '{clean}'")
+    print(f"Approx savings: {optimizer.estimate_token_savings(sample, clean)} tokens")

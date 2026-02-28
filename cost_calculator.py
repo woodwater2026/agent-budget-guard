@@ -29,9 +29,9 @@ class BudgetGuard:
         
         # 2026 Model Pricing Metadata (per 1M tokens)
         self.model_pricing = {
-            "gemini-flash-1.5": {"input": 0.075, "output": 0.30},
-            "deepseek-v3": {"input": 0.14, "output": 0.28},
-            "claude-3-5-sonnet": {"input": 3.00, "output": 15.00}
+            "gemini-flash-1.5": {"input": 0.075, "output": 0.30, "batch_discount": 0.5},
+            "deepseek-v3": {"input": 0.14, "output": 0.28, "batch_discount": 0.5},
+            "claude-3-5-sonnet": {"input": 3.00, "output": 15.00, "batch_discount": 0.0}
         }
 
     def load_config(self):
@@ -46,26 +46,33 @@ class BudgetGuard:
             self.thresholds = {"high_roi": 5.00, "routine": 0.05, "experiment": 0.50}
             self.notification_email = ""
 
-    def estimate_cost(self, model, input_tokens, output_tokens):
+    def estimate_cost(self, model, input_tokens, output_tokens, is_batch=False):
         pricing = self.model_pricing.get(model)
         if not pricing:
             return 0.0
-        cost = (input_tokens / 1_000_000 * pricing["input"]) + (output_tokens / 1_000_000 * pricing["output"])
+        
+        multiplier = 1.0 - pricing.get("batch_discount", 0.0) if is_batch else 1.0
+        cost = ((input_tokens / 1_000_000 * pricing["input"]) + (output_tokens / 1_000_000 * pricing["output"])) * multiplier
         return cost
 
     def recommend_model(self, input_tokens, target_output_tokens, max_budget=0.01):
         """
         Suggests the best model based on the provided budget.
+        Now includes a 'downgrade_reason' for transparency.
         """
         recommendations = []
         for model, pricing in self.model_pricing.items():
             est_cost = self.estimate_cost(model, input_tokens, target_output_tokens)
             if est_cost <= max_budget:
-                recommendations.append((model, est_cost))
+                recommendations.append({"model": model, "cost": est_cost})
         
         # Sort by cost (ascending)
-        recommendations.sort(key=lambda x: x[1])
-        return recommendations[0] if recommendations else (None, 0.0)
+        recommendations.sort(key=lambda x: x["cost"])
+        
+        if recommendations:
+            best = recommendations[0]
+            return best["model"], best["cost"], "Under budget"
+        return None, 0.0, "No model found within budget"
 
     def prepare_request(self, model, messages, context="routine"):
         """
@@ -107,6 +114,16 @@ class BudgetGuard:
             send_alert_email("⚠️ Agent Budget Alert", message)
         except ImportError:
             print("[ERROR] Notifier module not found.")
+
+    def get_meter_data(self):
+        """
+        Export usage data for external micro-billing systems (2026 standard).
+        """
+        return {
+            "total_window_spending": sum(entry[1] for entry in self.breaker.history),
+            "window_seconds": self.breaker.time_window,
+            "models_tracked": list(self.model_pricing.keys())
+        }
 
 # Quick Test
 if __name__ == "__main__":

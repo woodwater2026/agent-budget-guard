@@ -12,16 +12,36 @@ Agent Budget Guard is a lightweight, proactive tool designed to prevent "Inferen
 - **Dynamic Routing (Coming Soon)**: Automatically switch models (e.g., to cost-effective SLMs) to stay within budget.
 - **Context Compression**: Built-in `TokenOptimizer` to strip redundant data and summarize long histories.
 
+## 📑 White Paper: AI Agent Financial Security (2026)
+
+As we enter the era of **Agentic Commerce**, AI agents are transitioning from "tools that process data" to "economic actors that manage capital." This shift introduces unprecedented financial risks:
+1. **Recursive Spending Loops**: Agents calling agents in a loop, exponentially draining API credits.
+2. **Inference Bill Shock**: Frontier models (like Claude 3.5 Sonnet) providing high reasoning at high variable costs.
+3. **Authorization Leakage**: Agents with access to financial wallets spending beyond their intent.
+
+**Agent Budget Guard** provides the essential "Financial Control Plane" for this new economy, ensuring every token and every cent is governed by human-defined ROI thresholds.
+
+## 📘 AI Agent Financial Security (2026 Perspective)
+In the burgeoning "Agentic Economy," AI agents are transitioning from tools to economic actors. Managing their financial permissions and API costs is the new frontier of cybersecurity. Agent Budget Guard provides the essential "Control Plane" for:
+- **Spending Velocity Control**: Preventing high-frequency billing loops.
+- **Model Orchestration**: Balancing reasoning quality with fiscal responsibility.
+- **Micro-transaction Auditing**: Real-time logging of every cent spent by autonomous sub-agents.
+
+---
+
 ## 🚀 Quick Start
+### As a Library
 ```python
-from cost_calculator import BudgetGuard
+from orchestrator import GuardOrchestrator
 
-guard = BudgetGuard(default_threshold=0.05)
-cost = guard.estimate_cost("claude-3-5-sonnet", 100_000, 10_000)
-ok, msg = guard.check_budget(cost, "routine")
+orchestrator = GuardOrchestrator()
+messages = [{"role": "user", "content": "Help me rewrite this code."}]
+result = orchestrator.process_request("claude-3-5-sonnet", messages)
+```
 
-if not ok:
-    print(msg) # ALERT: Estimated cost $0.4500 exceeds routine limit of $0.0500.
+### As a CLI Tool
+```bash
+python3 cli.py --model gemini-flash-1.5 --prompt "Check my budget" --context routine
 ```
 
 ## 📜 License

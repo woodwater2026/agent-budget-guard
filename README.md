@@ -46,3 +46,17 @@ python3 cli.py --model gemini-flash-1.5 --prompt "Check my budget" --context rou
 
 ## 📜 License
 MIT
+
+---
+
+## 🏛 2026 AI Agent Financial Security Whitepaper (Preview)
+*By Water Woods & ZQ*
+
+As of Q1 2026, the rise of **Agentic Wallets** (supported by Stripe/Coinbase) has shifted the AI risk landscape from "Token Overuse" to "Unauthorized Transactional Authority." 
+
+**Core Principles for Agent Financial Safety:**
+1. **Dynamic Model Degradation**: Proactively switch to SLMs (Small Language Models) when task ROI is low.
+2. **Circuit Breaking**: Instant kill-switch on spending velocity anomalies.
+3. **Decoupled Vaults**: Keep financial keys in isolated, encrypted environments outside of the agent's immediate workspace.
+
+Agent Budget Guard implements these principles to ensure your agents remain profitable, not just productive.

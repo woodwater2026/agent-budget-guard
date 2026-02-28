@@ -12,13 +12,13 @@ class GuardOrchestrator:
         self.guard = BudgetGuard(config_path)
         self.optimizer = TokenOptimizer()
 
-    def process_request(self, model, messages, context="routine"):
+    def process_request(self, model, messages, context="routine", auto_fallback=False):
         # 1. Optimize tokens (strip whitespace, etc)
         optimized_messages = self.optimizer.optimize_payload(messages)
         
         # 2. Calculate current token counts
         input_text = " ".join([m["content"] for m in optimized_messages])
-        input_tokens = len(input_text) // 4 # Standard 2026 rough estimation (4 chars/token)
+        input_tokens = len(input_text) // 4 # Standard 2026 rough estimation
         
         # 3. Estimate cost
         est_cost = self.guard.estimate_cost(model, input_tokens, 500) # Assuming 500 output
@@ -27,9 +27,20 @@ class GuardOrchestrator:
         ok, msg = self.guard.check_budget(est_cost, context)
         
         if not ok:
-            # 5. Recommend cheaper model if over budget
+            # 5. Recommend or Auto-Fallback
             limit = self.guard.thresholds.get(context, 0.10)
             rec_model, rec_cost = self.guard.recommend_model(input_tokens, 500, limit)
+            
+            if auto_fallback and rec_model:
+                print(f"[AUTO-FALLBACK] Over budget on {model}. Switching to {rec_model}.")
+                return {
+                    "status": "fallback",
+                    "original_model": model,
+                    "new_model": rec_model,
+                    "estimated_cost": rec_cost,
+                    "optimized_messages": optimized_messages
+                }
+
             return {
                 "status": "blocked",
                 "message": msg,

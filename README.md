@@ -44,6 +44,13 @@ result = orchestrator.process_request("claude-3-5-sonnet", messages)
 python3 cli.py --model gemini-flash-1.5 --prompt "Check my budget" --context routine
 ```
 
+## 🛠 Project Components
+- `cost_calculator.py`: Core logic for pricing metadata and estimation.
+- `orchestrator.py`: The "Brain" coordinating optimization and routing.
+- `model_degrader.py`: Automated logic for model switching.
+- `cli.py`: Command-line interface for human-agent collaboration.
+- `notifier.py`: Integrated email alert system (Gmail IMAP/SMTP).
+
 ## 📜 License
 MIT
 

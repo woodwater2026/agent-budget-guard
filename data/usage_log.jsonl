@@ -1,0 +1,2 @@
+{"ts": "2026-03-01T17:50:53.734347+00:00", "model": "anthropic/claude-sonnet-4-6", "in": 5000, "out": 800, "usd": 0.027, "task": "heartbeat"}
+{"ts": "2026-03-01T18:48:49.576605+00:00", "model": "anthropic/claude-sonnet-4-6", "in": 3000, "out": 400, "usd": 0.015, "task": "heartbeat"}

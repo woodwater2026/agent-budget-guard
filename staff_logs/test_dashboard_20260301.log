@@ -1,0 +1,52 @@
+
+============================================================
+[2026-03-01 08:03:21] Test Run Results
+============================================================
+test_critical_above_80_pct (__main__.TestBudgetHealthThresholds.test_critical_above_80_pct) ... ok
+test_elevated_between_50_and_80_pct (__main__.TestBudgetHealthThresholds.test_elevated_between_50_and_80_pct) ... ok
+test_exact_50_pct_is_elevated (__main__.TestBudgetHealthThresholds.test_exact_50_pct_is_elevated) ... ok
+test_exact_80_pct_is_critical (__main__.TestBudgetHealthThresholds.test_exact_80_pct_is_critical) ... ok
+test_healthy_below_50_pct (__main__.TestBudgetHealthThresholds.test_healthy_below_50_pct) ... ok
+test_zero_spend_is_healthy (__main__.TestBudgetHealthThresholds.test_zero_spend_is_healthy) ... ok
+test_closed_state_in_dashboard (__main__.TestCircuitBreakerStateRendering.test_closed_state_in_dashboard) ... ok
+test_half_open_state_in_dashboard (__main__.TestCircuitBreakerStateRendering.test_half_open_state_in_dashboard) ... ok
+test_open_state_in_dashboard (__main__.TestCircuitBreakerStateRendering.test_open_state_in_dashboard) ... ok
+test_state_emoji_closed (__main__.TestCircuitBreakerStateRendering.test_state_emoji_closed) ... ok
+test_state_emoji_half_open (__main__.TestCircuitBreakerStateRendering.test_state_emoji_half_open) ... ok
+test_state_emoji_open (__main__.TestCircuitBreakerStateRendering.test_state_emoji_open) ... ok
+test_state_emoji_unknown (__main__.TestCircuitBreakerStateRendering.test_state_emoji_unknown) ... ok
+test_dashboard_has_markdown_tables (__main__.TestDashboardMarkdown.test_dashboard_has_markdown_tables) ... ok
+test_dashboard_has_model_pricing (__main__.TestDashboardMarkdown.test_dashboard_has_model_pricing) ... ok
+test_dashboard_has_required_sections (__main__.TestDashboardMarkdown.test_dashboard_has_required_sections) ... ok
+test_dashboard_has_timestamp (__main__.TestDashboardMarkdown.test_dashboard_has_timestamp) ... ok
+test_dashboard_has_title (__main__.TestDashboardMarkdown.test_dashboard_has_title) ... ok
+test_dashboard_returns_string (__main__.TestDashboardMarkdown.test_dashboard_returns_string) ... ok
+test_circuit_breaker_summary_default_breaker (__main__.TestGracefulHandling.test_circuit_breaker_summary_default_breaker)
+get_circuit_breaker_summary should work on a fresh breaker. ... ok
+test_estimated_daily_positive (__main__.TestGracefulHandling.test_estimated_daily_positive) ... ok
+test_estimated_daily_zero (__main__.TestGracefulHandling.test_estimated_daily_zero) ... ok
+test_generate_dashboard_missing_config_keys (__main__.TestGracefulHandling.test_generate_dashboard_missing_config_keys)
+Dashboard should handle guard with minimal/empty config. ... ok
+test_generate_dashboard_no_events (__main__.TestGracefulHandling.test_generate_dashboard_no_events)
+Dashboard should generate without error when no cost events exist. ... ok
+test_spend_velocity_negative_window (__main__.TestGracefulHandling.test_spend_velocity_negative_window) ... ok
+test_spend_velocity_zero_cost (__main__.TestGracefulHandling.test_spend_velocity_zero_cost) ... ok
+test_spend_velocity_zero_window (__main__.TestGracefulHandling.test_spend_velocity_zero_window) ... ok
+test_write_log_nested_missing_dir (__main__.TestGracefulHandling.test_write_log_nested_missing_dir)
+write_log should create deeply nested staff_logs/ if base_dir doesn't exist. ... ok
+test_estimated_daily_from_velocity (__main__.TestHelpers.test_estimated_daily_from_velocity) ... ok
+test_spend_velocity_calculation (__main__.TestHelpers.test_spend_velocity_calculation) ... ok
+test_spend_velocity_half_hour (__main__.TestHelpers.test_spend_velocity_half_hour) ... ok
+test_write_log_appends (__main__.TestLogFileCreation.test_write_log_appends) ... ok
+test_write_log_contains_message (__main__.TestLogFileCreation.test_write_log_contains_message) ... ok
+test_write_log_creates_log_file (__main__.TestLogFileCreation.test_write_log_creates_log_file) ... ok
+test_write_log_creates_staff_logs_dir (__main__.TestLogFileCreation.test_write_log_creates_staff_logs_dir) ... ok
+test_write_log_filename_contains_date (__main__.TestLogFileCreation.test_write_log_filename_contains_date) ... ok
+test_write_log_has_timestamp (__main__.TestLogFileCreation.test_write_log_has_timestamp) ... ok
+
+----------------------------------------------------------------------
+Ran 37 tests in 0.014s
+
+OK
+
+Overall: PASSED | Tests: 37 | Failures: 0 | Errors: 0

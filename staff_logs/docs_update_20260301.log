@@ -1,0 +1,19 @@
+[2026-03-01] Documentation Update Log
+Agent: Water Woods (docs sub-agent)
+Task: Update README.md and PLAN.md for Agent Budget Guard
+
+Changes made:
+README.md:
+  - Marked "Dynamic Routing" as complete (removed "Coming Soon")
+  - Added "Real-time Dashboard" to Key Features
+  - Added dashboard_updater.py to Project Components section
+  - Added "Running the Dashboard" section with usage command
+
+PLAN.md:
+  - Marked Real-time Cost Dashboard as complete ✅
+  - Added V0.4 Roadmap section with three items:
+      * HTTP API Server
+      * OpenClaw Self-Monitoring Integration
+      * PyPI Packaging
+
+Status: Complete. No files were rewritten — surgical edits only.

@@ -32,5 +32,10 @@ This plan outlines the next phase of development for the Agent Budget Guard proj
 
 ## 🎯 V0.3 Roadmap (Next Steps)
 - [ ] **Sub-agent Recruitment SOP**: Document how to hire specialist sub-agents with specific budget caps.
-- [ ] **Real-time Cost Dashboard**: Create a `dashboard.md` updated by a 5-min heartbeat to show spending vs ROI.
-- [ ] **Multi-Currency Metadata**: Support non-USD pricing metadata for global deployment.
+- [x] **Real-time Cost Dashboard**: `dashboard_updater.py` generates live `dashboard.md` with spend, health, and circuit breaker state. Full test suite in `test_dashboard_updater.py` (5 test categories).
+- [x] **Multi-Currency Metadata**: Support non-USD pricing metadata for global deployment (10 currencies: USD/EUR/GBP/CNY/JPY/CAD/AUD/INR/SGD/HKD). `estimate_cost()` now accepts `currency` param; `set_currency()` sets display default.
+
+## 🎯 V0.4 Roadmap (Next Steps)
+- [ ] **HTTP API Server**: Expose BudgetGuard as a local REST API (FastAPI) for multi-process agent monitoring.
+- [ ] **OpenClaw Self-Monitoring Integration**: Hook into OpenClaw's session loop to track Water Woods' own API spend in real time.
+- [ ] **PyPI Packaging**: Publish `agent-budget-guard` to PyPI with proper versioning, classifiers, and CI release workflow.

@@ -9,7 +9,8 @@ Agent Budget Guard is a lightweight, proactive tool designed to prevent "Inferen
 - **Proactive Cost Estimation**: Calculate costs *before* the API call happens.
 - **Context-Aware Thresholds**: Set different limits for "routine", "experiment", and "high-roi" tasks.
 - **Multi-Model Support**: Integrated pricing for Gemini-Flash, DeepSeek-V3, and Claude-3.5-Sonnet.
-- **Dynamic Routing (Coming Soon)**: Automatically switch models (e.g., to cost-effective SLMs) to stay within budget.
+- **Dynamic Routing**: Automatically switch models (e.g., to cost-effective SLMs) to stay within budget.
+- **Real-time Dashboard**: Live cost and circuit breaker status via `dashboard_updater.py`, updated on demand or by heartbeat.
 - **Context Compression**: Built-in `TokenOptimizer` to strip redundant data and summarize long histories.
 
 ## 📑 White Paper: AI Agent Financial Security (2026)
@@ -75,6 +76,13 @@ python3 cli.py --model gemini-flash-1.5 --prompt "Check my budget" --context rou
 - `model_degrader.py`: Automated logic for model switching.
 - `cli.py`: Command-line interface for human-agent collaboration.
 - `notifier.py`: Integrated email alert system (Gmail IMAP/SMTP).
+- `dashboard_updater.py`: Generates a real-time `dashboard.md` with spend, health status, and circuit breaker state.
+
+## 📊 Running the Dashboard
+
+```bash
+python3 dashboard_updater.py
+```
 
 ## 📜 License
 MIT

@@ -11,66 +11,33 @@ class BudgetGuard:
         self.load_config()
         self.breaker = CircuitBreaker(cost_limit=5.00, cost_window_seconds=300) # $5 limit every 5 mins
         
-        # 2026 Model Pricing Metadata (per 1M tokens, base currency: USD)
+        # 2026 Model Pricing Metadata (per 1M tokens)
         self.model_pricing = {
             "gemini-flash-1.5": {"input": 0.075, "output": 0.30, "batch_discount": 0.5},
             "deepseek-v3": {"input": 0.14, "output": 0.28, "batch_discount": 0.5},
-            "claude-3-5-sonnet": {"input": 3.00, "output": 15.00, "batch_discount": 0.0},
-            "claude-sonnet-4-6": {"input": 3.00, "output": 15.00, "batch_discount": 0.0},
-            "gemini-2.5-flash": {"input": 0.075, "output": 0.30, "batch_discount": 0.5},
+            "claude-3-5-sonnet": {"input": 3.00, "output": 15.00, "batch_discount": 0.0}
         }
-
-        # Multi-currency FX rates (relative to USD) — updated periodically
-        # Source: approximate 2026 rates; replace with live feed for production
-        self.fx_rates = {
-            "USD": 1.0,
-            "EUR": 0.92,
-            "GBP": 0.79,
-            "CNY": 7.24,
-            "JPY": 149.50,
-            "CAD": 1.36,
-            "AUD": 1.53,
-            "INR": 83.10,
-            "SGD": 1.34,
-            "HKD": 7.82,
-        }
-        # display_currency is set in load_config (called above in __init__)
 
     def load_config(self):
         if os.path.exists(self.config_path):
             with open(self.config_path, 'r') as f:
-                self.config = json.load(f)
+                config = json.load(f)
+                self.default_threshold = config.get("default_threshold", 0.10)
+                self.thresholds = config.get("thresholds", {})
+                self.notification_email = config.get("notification_email", "")
         else:
-            self.config = {}
-        self.default_threshold = self.config.get("default_threshold", 0.10)
-        self.thresholds = self.config.get("thresholds", {"high_roi": 5.00, "routine": 0.05, "experiment": 0.50})
-        self.notification_email = self.config.get("notification_email", "")
-        self.display_currency = self.config.get("currency", "USD")
+            self.default_threshold = 0.10
+            self.thresholds = {"high_roi": 5.00, "routine": 0.05, "experiment": 0.50}
+            self.notification_email = ""
 
-    def set_currency(self, currency_code: str):
-        """Set display currency for cost estimates. Raises ValueError if unsupported."""
-        if currency_code not in self.fx_rates:
-            raise ValueError(f"Unsupported currency: {currency_code}. Supported: {list(self.fx_rates.keys())}")
-        self.display_currency = currency_code
-
-    def convert_currency(self, usd_amount: float, target_currency: str = None) -> float:
-        """Convert a USD amount to the target (or display) currency."""
-        currency = target_currency or self.display_currency
-        rate = self.fx_rates.get(currency, 1.0)
-        return usd_amount * rate
-
-    def estimate_cost(self, model, input_tokens, output_tokens, is_batch=False, currency: str = None):
-        """Estimate cost in USD (or specified currency if provided)."""
+    def estimate_cost(self, model, input_tokens, output_tokens, is_batch=False):
         pricing = self.model_pricing.get(model)
         if not pricing:
             return 0.0
         
         multiplier = 1.0 - pricing.get("batch_discount", 0.0) if is_batch else 1.0
-        usd_cost = ((input_tokens / 1_000_000 * pricing["input"]) + (output_tokens / 1_000_000 * pricing["output"])) * multiplier
-        
-        if currency and currency != "USD":
-            return self.convert_currency(usd_cost, currency)
-        return usd_cost
+        cost = ((input_tokens / 1_000_000 * pricing["input"]) + (output_tokens / 1_000_000 * pricing["output"])) * multiplier
+        return cost
 
     def recommend_model(self, input_tokens, target_output_tokens, max_budget=0.01):
         """
@@ -152,12 +119,10 @@ class BudgetGuard:
     def trigger_notification(self, message):
         print(f"[NOTIFICATION SYSTEM] Sending alert: {message}")
         try:
-            import sys, os
-            sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
             from notifier import send_alert_email
             send_alert_email("⚠️ Agent Budget Alert", message)
         except ImportError:
-            pass  # Notifier optional — alert already printed above
+            print("[ERROR] Notifier module not found.")
 
     def get_meter_data(self):
         """

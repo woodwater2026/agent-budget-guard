@@ -1,0 +1,31 @@
+=== Agent Budget Guard API Server — Build Log ===
+Date: 2026-03-01
+Builder: Water Woods (subagent)
+
+FILES CREATED
+  api_server.py         — HTTP API server (Flask / stdlib fallback)
+  test_api_server.py    — unittest test suite (12 tests)
+
+ENDPOINTS
+  GET  /health      → {"ok": true}
+  GET  /status      → budget status, circuit breaker state, spend velocity
+  GET  /dashboard   → dashboard.md as plain text
+  POST /reset       → reset circuit breaker to CLOSED
+
+CONFIGURATION
+  Default port : 8765
+  Env override : BUDGET_GUARD_PORT
+  CLI arg      : --port N
+  Request logs : staff_logs/api_YYYYMMDD.log
+  Flask        : available (used if present), falls back to stdlib http.server
+
+BUG FIXED
+  cost_calculator.BudgetGuard.get_meter_data() referenced breaker.history and
+  breaker.time_window — neither exist on CircuitBreaker. api_server.py computes
+  meter data directly from breaker.cost_events instead.
+
+TEST RESULTS (retry 1/2)
+  Run 1: 7 passed, 5 failed (breaker.history AttributeError)
+  Run 2: 12 passed, 0 failed ✅
+
+STATUS: SUCCESS — 12/12 tests passing

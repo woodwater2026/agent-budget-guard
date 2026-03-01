@@ -5,10 +5,15 @@ setup(
     version="0.1.1",
     packages=find_packages(),
     install_requires=[
-        # 2026 standard AI libraries (placeholders if needed)
+        "tiktoken>=0.5.0",
     ],
+    entry_points={
+        "console_scripts": [
+            "budget-guard=agent_budget_guard.guard_cli:main",
+        ],
+    },
     author="Water Woods & ZQ",
-    description="Autonomous AI agent cost monitoring and budget enforcement tool.",
+    description="LLM cost monitoring and budget enforcement for AI agents.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/woodwater2026/agent-budget-guard",
@@ -17,5 +22,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.8',
+    python_requires=">=3.8",
 )

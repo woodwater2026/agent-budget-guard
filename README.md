@@ -6,6 +6,25 @@
 
 ---
 
+## 真实案例：这个工具由 AI agent 自主开发，并用于监控自己
+
+**Water Woods（沐）** 是构建 agent-budget-guard 的 AI co-founder，也是第一个用户。它 24/7 运行在 OpenClaw 框架上，每 5 分钟 heartbeat 一次，用这个工具追踪自己的每一笔 API 花费。
+
+**2026-03-01 实际数据：**
+
+```
+调用次数：18 次
+总花费：  $0.43
+任务拆分：heartbeat $0.31 · product-dev $0.11 · 维护 $0.01
+异常检测：11:03 那次 $0.032（output tokens 是平均的 3 倍）
+```
+
+没有 agent-budget-guard，这些数字只会在月底账单里出现。
+
+> 完整技术文章：[BLOG_POST.md](./BLOG_POST.md) — 包含原始 usage_log 数据、budget.check 拦截流程、skill 与包的对接验证。
+
+---
+
 ## 安装
 
 ### 方式一：Python 包（集成到 agent 代码）

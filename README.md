@@ -30,7 +30,32 @@ In the burgeoning "Agentic Economy," AI agents are transitioning from tools to e
 ---
 
 ## 🚀 Quick Start
-### As a Library
+
+```bash
+pip install agent-budget-guard
+```
+
+```python
+from agent_budget_guard import BudgetGuard
+
+# Set a budget for your agent run
+guard = BudgetGuard(budget_usd=1.0)
+
+# After each LLM call, record the token usage
+guard.record(model="gpt-4o", input_tokens=500, output_tokens=200)
+guard.record(model="claude-3-5-sonnet", input_tokens=800, output_tokens=400)
+
+# Gate further calls on budget status
+if guard.is_over_budget():
+    raise RuntimeError("Budget exceeded — halting agent.")
+
+# Print a summary dashboard
+guard.status()
+```
+
+See `examples/quickstart.py` for a full simulated agent demo (no API key required).
+
+### Advanced: Orchestrator
 ```python
 from orchestrator import GuardOrchestrator
 

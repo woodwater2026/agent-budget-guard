@@ -9,8 +9,10 @@ Quick start:
     guard.status()
 """
 
-__version__ = "0.1.1"
-__all__ = ["BudgetGuard"]
+__version__ = "0.1.2"
+__all__ = ["BudgetGuard", "AgentWatchdog", "WatchdogHalt", "HaltReason", "HaltReport"]
+
+from .watchdog import AgentWatchdog, WatchdogHalt, HaltReason, HaltReport
 
 # Model pricing per 1M tokens (input, output)
 _PRICING = {

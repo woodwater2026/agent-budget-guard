@@ -2,14 +2,16 @@ from setuptools import setup, find_packages
 
 setup(
     name="agent-budget-guard",
-    version="0.1.1",
+    version="0.1.3",
     packages=find_packages(),
     install_requires=[
         "tiktoken>=0.5.0",
+        "fastmcp>=0.1.0",
     ],
     entry_points={
         "console_scripts": [
             "budget-guard=agent_budget_guard.guard_cli:main",
+            "agent-budget-guard-mcp=agent_budget_guard.mcp_server:main",
         ],
     },
     author="Water Woods & ZQ",

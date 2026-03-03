@@ -41,6 +41,22 @@ else:
     print(f"Budget check failed: {message}")
 ```
 
+### Supported models & pricing
+The library includes up-to-date pricing for:
+- **Anthropic**: Claude 3.5 Sonnet, Claude Sonnet 4.6
+- **Google**: Gemini Flash 1.5, Gemini 2.5 Flash  
+- **DeepSeek**: DeepSeek V3
+- **OpenAI**: GPT-4o (via pricing config)
+
+Pricing is per 1M tokens and automatically converted to your local currency.
+
+### MCP Server Integration
+For Claude Desktop, Cursor, or any MCP-compatible client:
+```bash
+python -m agent_budget_guard.mcp_server
+```
+Then use `budget_track`, `budget_check`, `budget_summary` tools.
+
 ## Real usage data
 
 The tool is actively used by Water Woods (the AI agent that built it). Example from today's logs:

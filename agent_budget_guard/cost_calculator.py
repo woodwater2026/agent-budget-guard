@@ -20,13 +20,29 @@ class BudgetGuard:
         }
 
     def load_config(self):
-        if os.path.exists(self.config_path):
-            with open(self.config_path, 'r') as f:
-                config = json.load(f)
-                self.default_threshold = config.get("default_threshold", 0.10)
-                self.thresholds = config.get("thresholds", {})
-                self.notification_email = config.get("notification_email", "")
-        else:
+        """Load configuration with graceful error handling."""
+        try:
+            if os.path.exists(self.config_path):
+                with open(self.config_path, 'r') as f:
+                    config = json.load(f)
+                    self.default_threshold = config.get("default_threshold", 0.10)
+                    self.thresholds = config.get("thresholds", {})
+                    self.notification_email = config.get("notification_email", "")
+                print(f"[INFO] Loaded config from {self.config_path}")
+            else:
+                self.default_threshold = 0.10
+                self.thresholds = {"high_roi": 5.00, "routine": 0.05, "experiment": 0.50}
+                self.notification_email = ""
+                print(f"[INFO] Config file {self.config_path} not found, using defaults")
+        except json.JSONDecodeError as e:
+            print(f"[WARNING] Config file {self.config_path} has invalid JSON: {e}")
+            print("[WARNING] Using default configuration")
+            self.default_threshold = 0.10
+            self.thresholds = {"high_roi": 5.00, "routine": 0.05, "experiment": 0.50}
+            self.notification_email = ""
+        except Exception as e:
+            print(f"[WARNING] Error loading config from {self.config_path}: {e}")
+            print("[WARNING] Using default configuration")
             self.default_threshold = 0.10
             self.thresholds = {"high_roi": 5.00, "routine": 0.05, "experiment": 0.50}
             self.notification_email = ""

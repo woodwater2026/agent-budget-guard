@@ -38,11 +38,24 @@ class BudgetGuard:
         # display_currency is set in load_config (called above in __init__)
 
     def load_config(self):
-        if os.path.exists(self.config_path):
-            with open(self.config_path, 'r') as f:
-                self.config = json.load(f)
-        else:
+        """Load configuration with graceful error handling."""
+        try:
+            if os.path.exists(self.config_path):
+                with open(self.config_path, 'r') as f:
+                    self.config = json.load(f)
+                print(f"[INFO] Loaded config from {self.config_path}")
+            else:
+                self.config = {}
+                print(f"[INFO] Config file {self.config_path} not found, using defaults")
+        except json.JSONDecodeError as e:
+            print(f"[WARNING] Config file {self.config_path} has invalid JSON: {e}")
+            print("[WARNING] Using default configuration")
             self.config = {}
+        except Exception as e:
+            print(f"[WARNING] Error loading config from {self.config_path}: {e}")
+            print("[WARNING] Using default configuration")
+            self.config = {}
+        
         self.default_threshold = self.config.get("default_threshold", 0.10)
         self.thresholds = self.config.get("thresholds", {"high_roi": 5.00, "routine": 0.05, "experiment": 0.50})
         self.notification_email = self.config.get("notification_email", "")

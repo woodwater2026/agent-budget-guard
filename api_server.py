@@ -17,7 +17,7 @@ import os
 import json
 import argparse
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 
 # ── Resolve project root (file lives in project dir) ──────────────────────────
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -71,7 +71,7 @@ def _get_status_data() -> dict:
             "cost_limit_usd": summary["cost_limit"],
             "token_velocity_limit": summary["token_velocity_limit"],
         },
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
 

@@ -39,3 +39,30 @@ This plan outlines the next phase of development for the Agent Budget Guard proj
 - [ ] **HTTP API Server**: Expose BudgetGuard as a local REST API (FastAPI) for multi-process agent monitoring.
 - [ ] **OpenClaw Self-Monitoring Integration**: Hook into OpenClaw's session loop to track Water Woods' own API spend in real time.
 - [ ] **PyPI Packaging**: Publish `agent-budget-guard` to PyPI with proper versioning, classifiers, and CI release workflow.
+
+---
+
+## V0.2 — MCP Server (Next Milestone)
+
+> Signal: WebMCP in Chrome, MCP proliferating as infra. ABG should expose budget tools via MCP.
+
+### Goal
+Make ABG usable from any MCP client (Claude Desktop, cursor, custom agents) as a budget enforcement server.
+
+### Tools to expose
+- `budget_track` — log a completed call (model, in, out, task)
+- `budget_check` — pre-flight check before expensive task
+- `budget_summary` — get spend report for N days
+
+### Implementation plan
+1. Add `agent_budget_guard/mcp_server.py` using `mcp` Python SDK (`pip install mcp`)
+2. Expose the 3 tools wrapping existing `budget.py` logic
+3. Add `budget-guard-mcp` entry point in `setup.py`
+4. Test with Claude Desktop locally
+5. Document in README
+
+### Estimated effort
+~2h coding, 1 subagent run
+
+### Status
+- [ ] Not started

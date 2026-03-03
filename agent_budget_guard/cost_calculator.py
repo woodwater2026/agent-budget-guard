@@ -9,7 +9,8 @@ class BudgetGuard:
     def __init__(self, config_path="config.json"):
         self.config_path = config_path
         self.load_config()
-        self.breaker = CircuitBreaker(cost_limit=5.00, cost_window_seconds=300) # $5 limit every 5 mins
+        # Adjusted for 20-minute heartbeats: $10 limit every 10 minutes
+        self.breaker = CircuitBreaker(cost_limit=10.00, cost_window_seconds=600)
         
         # 2026 Model Pricing Metadata (per 1M tokens)
         self.model_pricing = {

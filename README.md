@@ -127,6 +127,36 @@ python3 budget.py summary --days 7
 
 ---
 
+## MCP 服务器集成
+
+Agent Budget Guard 提供 MCP (Model Context Protocol) 服务器，允许任何 MCP 兼容客户端使用预算跟踪工具。
+
+### 启动 MCP 服务器
+
+```bash
+python -m agent_budget_guard.mcp_server
+```
+
+### 可用工具
+
+MCP 服务器提供以下工具：
+
+1. **budget_track** - 记录 API 调用花费
+2. **budget_check** - 检查任务是否在预算内
+3. **budget_summary** - 获取花费摘要
+
+### 客户端示例
+
+查看 [examples/mcp_client_example.py](examples/mcp_client_example.py) 了解如何使用 MCP 客户端。
+
+### OpenClaw 技能集成
+
+Agent Budget Guard 已作为技能集成到 OpenClaw 中：
+- 位置：`~/.openclaw/workspace/skills/agent-budget-guard/`
+- 自动在每个心跳中调用 `budget.track`
+
+---
+
 ## 日志格式
 
 `data/usage_log.jsonl`

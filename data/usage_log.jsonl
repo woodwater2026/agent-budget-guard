@@ -339,3 +339,5 @@
 {"ts": "2026-03-03T04:54:13.206535+00:00", "model": "deepseek/deepseek-chat", "in": 150, "out": 100, "usd": 0.00045, "task": "heartbeat"}
 {"ts": "2026-03-03T04:59:06.781119+00:00", "model": "deepseek/deepseek-chat", "in": 100, "out": 50, "usd": 0.00025, "task": "heartbeat"}
 {"ts": "2026-03-03T05:04:27.188253+00:00", "model": "deepseek/deepseek-chat", "in": 100, "out": 50, "usd": 0.00025, "task": "heartbeat"}
+{"ts": "2026-03-03T05:24:17.112095+00:00", "model": "deepseek/deepseek-chat", "in": 500, "out": 300, "usd": 0.0014, "task": "heartbeat"}
+{"ts": "2026-03-03T05:44:18.717155+00:00", "model": "deepseek/deepseek-chat", "in": 300, "out": 100, "usd": 0.0006, "task": "heartbeat"}

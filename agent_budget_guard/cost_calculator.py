@@ -121,7 +121,10 @@ class BudgetGuard:
         print(f"[NOTIFICATION SYSTEM] Sending alert: {message}")
         try:
             from notifier import send_alert_email
-            send_alert_email("⚠️ Agent Budget Alert", message)
+            
+            # Disable email if circuit is OPEN to prevent alert storms
+            enable_email = self.breaker.state != "OPEN"
+            send_alert_email("⚠️ Agent Budget Alert", message, enable_email=enable_email)
         except ImportError:
             print("[ERROR] Notifier module not found.")
 

@@ -79,6 +79,15 @@ def _today_usd() -> float:
 
 def _append_log(entry: dict):
     _ensure_log()
+    
+    # Check if log file is getting too large (>10MB)
+    if LOG_PATH.exists() and LOG_PATH.stat().st_size > 10 * 1024 * 1024:  # 10MB
+        # Rotate log: create new file with timestamp
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+        new_path = LOG_PATH.parent / f"usage_log_{timestamp}.jsonl"
+        LOG_PATH.rename(new_path)
+        print(f"[INFO] Log rotated: {LOG_PATH.name} -> {new_path.name}")
+    
     with open(LOG_PATH, "a") as f:
         f.write(json.dumps(entry) + "\n")
 
